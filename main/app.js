@@ -58,22 +58,22 @@ app.get('/food-items', async (req, res) => {
 app.post('/food-items', async (req, res) => {
     try{
 		if (Object.keys(req.body).length == 0) {
-			res.status(400).json({message: 'body is missing'})
+			return res.status(400).json({message: 'body is missing'})
 		}
 		else {
 			let keys = ['name', 'category', 'calories']
 			for (let i = 0; i < Object.keys(req.body).length; i++) {
 				if (Object.keys(req.body)[i] !== keys[i] || Object.keys(req.body).length !== keys.length) {
-					res.status(400).json({message: 'malformed request'})
+					return res.status(400).json({message: 'malformed request'})
 				}
 			}
 
 			if (req.body.calories < 0) {
-				res.status(400).json({message: 'calories should be a positive number'})
+				return res.status(400).json({message: 'calories should be a positive number'})
 			}
 
 			await FoodItem.create(req.body).then( () => {
-				res.status(201).json({message : 'created'})
+				return res.status(201).json({message : 'created'})
 			}).catch( (error) => {
 				res.status(400).json({message : 'not a valid category'})
 			})
